@@ -1,0 +1,63 @@
+services:
+  yacht:
+    image: selfhostedpro/yacht
+    container_name: yacht
+    ports:
+      - "8000:8000"
+    volumes:
+      - /home/axel/Documents/projects/smart-room/yacht:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: no
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM=claim-q_QmsoqsY1ebDPupcL4j
+    volumes:
+      - /home/axel/Documents/projects/home-server/plex:/config
+      - /media/axel/disk-axel/videos/movies:/Movies
+      - /media/axel/disk-axel/videos/series:/Series
+      - /media/axel/disk-axel/audios:/Audios
+      - /media/axel/disk-axel/music:/Music
+    ports:
+      - "32400:32400/tcp"
+      - "32400:32400"
+      - "1900:1900/udp"
+      - "3005:3005/tcp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+      - "32469:32469"
+    restart: no
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - /home/axel/Documents/projects/smart-room/qbittorrent:/config
+      - /home/axel/Downloads:/Downloads
+      - /media/axel/disk-axel/videos/Movies:/Movies
+      - /media/axel/disk-axel/videos/Series:/Series
+      - /media/axel/disk-axel/Audios:/Audios
+      - /media/axel/disk-axel/Music:/Music
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: no
+
+volumes:
+  yacht:
+  plex:
+  qbittorrent:

@@ -1,0 +1,13 @@
+[Unit]
+Description=Démarrage de Plex
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/axel/Documents/projects/home-server
+ExecStart=/home/axel/Documents/projects/home-server/start_docker_compose.sh
+
+[Install]
+WantedBy=multi-user.target
