@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://github.com/axelriv62/home-server/icon.png" width="200">
+  <img src="https://github.com/axelriv62/home-server/blob/main/icon.png" width="200">
   <br>
   <b>Home Server</b>
   <br>

@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://github.com/axelriv62/home-server/icon.png" width="200">
+  <img src="https://github.com/axelriv62/home-server/blob/main/icon.png" width="200">
   <br>
   <b>Home Server</b>
   <br>
@@ -44,7 +44,7 @@ Ce projet étant en constante évolution, voici quelques pistes d'amélioration 
 + Gitlab pour stocker et gérer mes projets.
 + Cloud personnel avec Nextcloud pour stocker mes fichiers.
 + VPN avec OpenVPN pour sécuriser mes connexions.
-+ + Application pour pouvoir gérer mes lumières connectées.
++ Application pour pouvoir gérer mes lumières connectées.
 
 <br>
 
