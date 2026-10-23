@@ -1,0 +1,47 @@
+services:
+
+  ################# REACTIVE-RESUME #################
+
+  reactive-resume:
+    container_name: reactive-resume
+    image: ghcr.io/reactive-resume/reactive-resume:latest
+    restart: unless-stopped
+    ports:
+      - "8595:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./reactive-resume/config:/app/data
+    depends_on:
+      reactive-resume-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1));"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  reactive-resume-db:
+    container_name: reactive-resume-db
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./reactive-resume/database:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ################# OMNI-TOOLS #################
+
+  omni-tools:
+    image: iib0011/omni-tools:latest
+    container_name: omni-tools
+    ports:
+      - '8292:80'
+    restart: unless-stopped

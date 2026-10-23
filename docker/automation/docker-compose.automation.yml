@@ -1,0 +1,31 @@
+services:
+
+  ############################## HOME ASSISTANT ##############################
+
+  home-assistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: home-assistant
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./home-assistant:/config
+    ports:
+      - "8123:8123" #optional
+    restart: unless-stopped
+
+  radicale:
+    container_name: radicale
+    image: ghcr.io/kozea/radicale:stable
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - RADICALE_CONFIG_AUTH_TYPE=none
+    ports:
+      - "5232:5232"
+    volumes:
+      - ./radicale/config:/etc/radicale
+      - ./radicale/data:/var/lib/radicale
+    restart: unless-stopped

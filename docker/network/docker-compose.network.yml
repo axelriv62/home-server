@@ -1,0 +1,54 @@
+services:
+
+  ############################## PI-HOLE ##############################
+
+  pi-hole:
+    image: pihole/pihole:latest
+    container_name: pi-hole
+    ports:
+      - "53:53/tcp"    # DNS TCP
+      - "53:53/udp"    # DNS UDP (obligatoire)
+      - "8084:80/tcp"  # Interface web sur le port 8084
+      # - "443:443/tcp"  # Désactive HTTPS si tu n'en as pas besoin
+    environment:
+      - TZ=Europe/Paris
+      - FTLCONF_webserver_api_password=${PIHOLE_PASSWORD}
+      - FTLCONF_dns_listeningMode=ALL # Obligatoire en mode bridge
+      - ServerIP=192.168.1.100
+      - WEB_PORT=8084 # Force le port 8084 pour l'interface web
+      - FTLCONF_webserver_port=80 # Variable officielle pour forcer le port
+    volumes:
+      - ./pi-hole/config:/etc/pihole
+      - ./pi-hole/dnsmasq:/etc/dnsmasq.d
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN # nécéssaire pour le DNS
+
+  ############################## PORTAINER ##############################
+
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: dockhand
+    restart: unless-stopped
+    ports:
+      - 9443:3000
+    volumes:
+      - ./dockhand:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  ############################## KEEPASSXC ##############################
+
+  keepassxc:
+    image: lscr.io/linuxserver/keepassxc:latest
+    container_name: keepassxc
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./keepassxc:/config
+      - /home/axel/Documents/keepassxc:/database
+    ports:
+      - 3001:3001
+    shm_size: "1gb"
+    restart: unless-stopped
